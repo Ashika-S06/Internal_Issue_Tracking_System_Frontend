@@ -9,6 +9,8 @@ async function request(endpoint, method = "GET", body = null) {
     "Content-Type": "application/json",
   };
 
+
+  
   const token = getToken();
   if (token) {
     headers["Authorization"] = `Bearer ${token}`;
