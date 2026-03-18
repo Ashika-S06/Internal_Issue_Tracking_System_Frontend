@@ -26,15 +26,16 @@ function checkAuth() {
 })();
 
 async function login() {
-  const username = document.getElementById("username").value.trim();
-  const password = document.getElementById("password").value.trim();
+  console.log("Login clicked");
 
-  if (!username || !password) {
-    alert("All fields are required");
-    return;
-  }
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  console.log(username, password);
 
   const data = await request("/auth/login", "POST", { username, password });
+
+  console.log(data);
 
   if (data.token) {
     localStorage.setItem("token", data.token);
