@@ -1,6 +1,11 @@
 body {
   font-family: Arial;
-  background: #f4f4f4;
+  background: #eef2f7;
+  margin: 0;
+  padding: 0;
+}
+
+h2, h3 {
   text-align: center;
 }
 
@@ -10,7 +15,8 @@ body {
   margin-top: 100px;
   padding: 20px;
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
 }
 
 input, select, button {
@@ -20,9 +26,41 @@ input, select, button {
   padding: 10px;
 }
 
+button {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #45a049;
+}
+
 .card {
   background: white;
-  margin: 10px;
-  padding: 10px;
-  border-radius: 8px;
+  margin: 15px auto;
+  padding: 15px;
+  width: 80%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+}
+
+.status {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 6px;
+  color: white;
+}
+
+.status.OPEN {
+  background: red;
+}
+
+.status.IN_PROGRESS {
+  background: orange;
+}
+
+.status.RESOLVED {
+  background: green;
 }
