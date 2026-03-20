@@ -21,7 +21,12 @@ async function request(endpoint, method = "GET", body = null) {
       body: body ? JSON.stringify(body) : null,
     });
 
-    const data = await res.json();
+    const text = await res.text();
+
+    // Debug: check what backend returns
+    console.log("RAW RESPONSE:", text);
+
+    const data = JSON.parse(text);
 
     if (!res.ok) {
       throw new Error(data.message || "Something went wrong");
