@@ -1,41 +1,13 @@
-function checkAuth() {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  if (!token) {
-    window.location.href = "index.html";
-  }
-
-  return role;
-}
-
-// Auto redirect if already logged in
-(function () {
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role");
-
-  if (token && role) {
-    if (window.location.pathname.includes("index.html")) {
-      if (role === "ADMIN") {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "employee.html";
-      }
-    }
-  }
-})();
-
 async function login() {
-  console.log("Login clicked");
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value.trim();
 
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  console.log("Sending request...");
+  if (!username || !password) {
+    alert("Enter all fields");
+    return;
+  }
 
   const data = await request("/auth/login", "POST", { username, password });
-
-  console.log("Response:", data);
 
   if (data && data.token) {
     localStorage.setItem("token", data.token);
@@ -58,20 +30,18 @@ async function register() {
     alert("All fields required");
     return;
   }
-  const email = document.getElementById("email").value;
+
   const data = await request("/auth/register", "POST", {
     username,
-    email,
     password,
     role,
   });
 
-  if (data && data.message) {
-    alert(data.message);
+  if (data) {
+    alert("Registered successfully");
     window.location.href = "index.html";
   }
 }
-
 
 function logout() {
   localStorage.clear();

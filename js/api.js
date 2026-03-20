@@ -21,21 +21,16 @@ async function request(endpoint, method = "GET", body = null) {
       body: body ? JSON.stringify(body) : null,
     });
 
-    const text = await res.text();
-
-    // Debug: check what backend returns
-    console.log("RAW RESPONSE:", text);
-
-    const data = JSON.parse(text);
+    const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(data.message || "Something went wrong");
+      throw new Error(data.message);
     }
 
     return data;
 
   } catch (error) {
-    console.error("API ERROR:", error);
+    console.error(error);
     alert(error.message);
   }
 }
