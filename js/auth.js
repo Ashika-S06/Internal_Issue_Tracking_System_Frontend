@@ -65,9 +65,12 @@ async function register() {
     role,
   });
 
-  alert(data.message);
-  window.location.href = "index.html";
+  if (data && data.message) {
+    alert(data.message);
+    window.location.href = "index.html";
+  }
 }
+
 
 function logout() {
   localStorage.clear();
