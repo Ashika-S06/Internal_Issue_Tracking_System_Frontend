@@ -5,22 +5,32 @@ function getToken() {
 }
 
 async function request(endpoint, method = "GET", body = null) {
-  const headers = {
-    "Content-Type": "application/json",
-  };
+  try {
+    const headers = {
+      "Content-Type": "application/json",
+    };
 
+    const token = getToken();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
-  
-  const token = getToken();
-  if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    const res = await fetch(BASE_URL + endpoint, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : null,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Something went wrong");
+    }
+
+    return data;
+
+  } catch (error) {
+    console.error("API ERROR:", error);
+    alert(error.message);
   }
-
-  const res = await fetch(BASE_URL + endpoint, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : null,
-  });
-
-  return res.json();
 }
