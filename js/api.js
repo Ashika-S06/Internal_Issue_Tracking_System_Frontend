@@ -1,4 +1,4 @@
-const BASE_URL = "https://internal-issue-tracking-system-backend-1.onrender.com";
+const BASE_URL = "https://internal-issue-tracking-system-backend-1.onrender.com/api";
 
 function getToken() {
   return localStorage.getItem("token");
