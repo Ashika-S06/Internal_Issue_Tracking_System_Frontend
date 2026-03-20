@@ -58,9 +58,10 @@ async function register() {
     alert("All fields required");
     return;
   }
-
+  const email = document.getElementById("email").value;
   const data = await request("/auth/register", "POST", {
     username,
+    email,
     password,
     role,
   });
