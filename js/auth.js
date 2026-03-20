@@ -31,13 +31,13 @@ async function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  console.log(username, password);
+  console.log("Sending request...");
 
   const data = await request("/auth/login", "POST", { username, password });
 
-  console.log(data);
+  console.log("Response:", data);
 
-  if (data.token) {
+  if (data && data.token) {
     localStorage.setItem("token", data.token);
     localStorage.setItem("role", data.role);
 
@@ -46,8 +46,6 @@ async function login() {
     } else {
       window.location.href = "employee.html";
     }
-  } else {
-    alert(data.message);
   }
 }
 
