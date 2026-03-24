@@ -26,8 +26,7 @@ async function createIssue() {
   }
 
   await request("/issues", "POST", { title, description });
-
-  alert("Issue created!");
+  alert("Issue created successfully!");
   document.getElementById("title").value = "";
   document.getElementById("description").value = "";
 }
