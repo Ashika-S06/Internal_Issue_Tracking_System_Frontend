@@ -1,27 +1,241 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Register</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IssueDesk — Register</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .auth-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .auth-left {
+      background: var(--dark);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-left::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(99,230,153,0.15) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      pointer-events: none;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 60px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: var(--accent);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-icon svg { width: 24px; height: 24px; fill: none; stroke: var(--dark); stroke-width: 2; }
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 22px;
+      color: white;
+    }
+    .auth-tagline {
+      font-family: 'Syne', sans-serif;
+      font-size: 44px;
+      font-weight: 800;
+      color: white;
+      line-height: 1.1;
+      letter-spacing: -2px;
+      margin-bottom: 24px;
+    }
+    .auth-tagline span { color: var(--accent); }
+    .auth-desc {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.7;
+      max-width: 340px;
+      margin-bottom: 48px;
+    }
+    .feature-list { display: flex; flex-direction: column; gap: 16px; }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .feature-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .feature-text {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+    }
+    .auth-right {
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px;
+    }
+    .auth-form-wrap {
+      width: 100%;
+      max-width: 380px;
+    }
+    .form-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+      margin-bottom: 8px;
+    }
+    .form-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+    }
+    .form-subtitle a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .role-picker {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    .role-card {
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .role-card:hover { border-color: var(--accent); }
+    .role-card.selected {
+      border-color: var(--accent);
+      background: rgba(99,230,153,0.07);
+    }
+    .role-card-icon { font-size: 24px; margin-bottom: 6px; }
+    .role-card-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .role-card-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+    @media (max-width: 768px) {
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-left { display: none; }
+      .auth-right { padding: 40px 24px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-  <h2>Create Account 🚀</h2>
-  <input type="text" id="username" placeholder="Username">
-  <input type="password" id="password" placeholder="Password">
-  <input type="email" id="email" placeholder="Email">
+  <div class="auth-page">
+    <div class="auth-left">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="brand-name">IssueDesk</span>
+      </div>
+      <div class="auth-tagline">Join the<br><span>team.</span></div>
+      <p class="auth-desc">Create your account and start tracking issues with clarity and speed.</p>
+      <div class="feature-list">
+        <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Real-time issue status updates</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Role-based access control</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Admin oversight & resolution tracking</span></div>
+        <div class="feature-item"><div class="feature-dot"></div><span class="feature-text">Clean, distraction-free interface</span></div>
+      </div>
+    </div>
 
-  <select id="role">
-    <option value="EMPLOYEE">Employee</option>
-    <option value="ADMIN">Admin</option>
-  </select>
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+        <div class="form-title">Create account</div>
+        <p class="form-subtitle">Already registered? <a href="index.html">Sign in here</a></p>
 
-  <button onclick="register()">Register</button>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" id="username" placeholder="Choose a username">
+          </div>
+        </div>
 
-  <p style="text-align:center; margin-top:10px;">
-    Already have account? <a href="index.html">Login</a>
-  </p>
-</div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <input type="email" id="email" placeholder="Enter your email">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <input type="password" id="password" placeholder="Create a password">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select Role</label>
+          <div class="role-picker">
+            <div class="role-card selected" onclick="selectRole('EMPLOYEE', this)">
+              <div class="role-card-icon">👤</div>
+              <div class="role-card-label">Employee</div>
+              <div class="role-card-desc">Submit & track issues</div>
+            </div>
+            <div class="role-card" onclick="selectRole('ADMIN', this)">
+              <div class="role-card-icon">🛡️</div>
+              <div class="role-card-label">Admin</div>
+              <div class="role-card-desc">Manage all issues</div>
+            </div>
+          </div>
+          <select id="role" style="display:none;">
+            <option value="EMPLOYEE">Employee</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        </div>
+
+        <button class="btn btn-primary btn-full" onclick="register()">
+          Create Account
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+
+        <div id="registerMsg" class="form-msg"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function selectRole(value, el) {
+      document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('role').value = value;
+    }
+  </script>
   <script src="js/api.js"></script>
   <script src="js/auth.js"></script>
 </body>

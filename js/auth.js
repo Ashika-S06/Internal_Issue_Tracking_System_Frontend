@@ -1,12 +1,17 @@
+function showMsg(id, text, type = 'error') {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = `form-msg ${type}`;
+}
+
 function checkAuth() {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
-
   if (!token) {
     window.location.href = "index.html";
     return null;
   }
-
   return role;
 }
 
@@ -14,15 +19,8 @@ function checkAuth() {
 (function () {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role");
-
-  if (token && role) {
-    if (window.location.pathname.includes("index.html")) {
-      if (role === "ADMIN") {
-        window.location.href = "admin.html";
-      } else {
-        window.location.href = "employee.html";
-      }
-    }
+  if (token && role && (window.location.pathname.includes("index.html") || window.location.pathname.endsWith("/"))) {
+    window.location.href = role === "ADMIN" ? "admin.html" : "employee.html";
   }
 })();
 
@@ -31,43 +29,61 @@ async function login() {
   const password = document.getElementById("password").value.trim();
 
   if (!username || !password) {
-    alert("Enter all fields");
+    showMsg("loginMsg", "Please enter your username and password.");
     return;
   }
 
-  const data = await request("/auth/login", "POST", { username, password });
+  const btn = document.querySelector("button.btn-primary");
+  if (btn) { btn.textContent = "Signing in…"; btn.disabled = true; }
 
-  if (data && data.token) {
-    localStorage.setItem("token", data.token);
-    localStorage.setItem("role", data.role);
+  try {
+    const data = await request("/auth/login", "POST", { username, password });
 
-    if (data.role === "ADMIN") {
-      window.location.href = "admin.html";
+    if (data && data.token) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("role", data.role);
+      localStorage.setItem("username", username);
+      window.location.href = data.role === "ADMIN" ? "admin.html" : "employee.html";
     } else {
-      window.location.href = "employee.html";
+      showMsg("loginMsg", data?.message || "Invalid credentials. Please try again.");
+      if (btn) { btn.innerHTML = 'Sign In <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'; btn.disabled = false; }
     }
+  } catch (e) {
+    showMsg("loginMsg", "Connection error. Please try again.");
+    if (btn) { btn.innerHTML = 'Sign In'; btn.disabled = false; }
   }
 }
 
 async function register() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
+  const email = document.getElementById("email")?.value.trim();
   const role = document.getElementById("role").value;
 
   if (!username || !password) {
-    alert("All fields required");
+    showMsg("registerMsg", "Username and password are required.");
     return;
   }
 
-  const data = await request("/auth/register", "POST", {
-    username,
-    password,
-    role,
-  });
+  const btn = document.querySelector("button.btn-primary");
+  if (btn) { btn.textContent = "Creating account…"; btn.disabled = true; }
 
-  if (data) {
-    alert("Registered successfully");
-    window.location.href = "index.html";
+  try {
+    const payload = { username, password, role };
+    if (email) payload.email = email;
+
+    const data = await request("/auth/register", "POST", payload);
+
+    if (data && (data._id || data.message === "User registered")) {
+      showMsg("registerMsg", "Account created! Redirecting…", "success");
+      setTimeout(() => window.location.href = "index.html", 1200);
+    } else {
+      showMsg("registerMsg", data?.message || "Registration failed. Try a different username.");
+      if (btn) { btn.innerHTML = 'Create Account <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>'; btn.disabled = false; }
+    }
+  } catch (e) {
+    showMsg("registerMsg", "Connection error. Please try again.");
+    if (btn) { btn.innerHTML = 'Create Account'; btn.disabled = false; }
   }
 }
 

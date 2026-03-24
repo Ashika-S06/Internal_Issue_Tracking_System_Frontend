@@ -1,36 +1,381 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Employee Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IssueDesk — My Issues</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .app-layout {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      min-height: 100vh;
+    }
+    .sidebar {
+      background: var(--dark);
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+      padding: 0 8px;
+    }
+    .sidebar-brand-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .sidebar-brand-icon svg { width: 20px; height: 20px; fill: none; stroke: var(--dark); stroke-width: 2; }
+    .sidebar-brand-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 18px;
+      color: white;
+    }
+    .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.5);
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .nav-item svg { width: 18px; height: 18px; flex-shrink: 0; }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: white; }
+    .nav-item.active { background: rgba(99,230,153,0.15); color: var(--accent); }
+    .sidebar-footer {
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .user-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+    .user-avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--dark);
+      flex-shrink: 0;
+    }
+    .user-info {}
+    .user-name { font-size: 13px; font-weight: 600; color: white; }
+    .user-role { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px; }
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      color: rgba(255,255,255,0.4);
+      font-size: 13px;
+      transition: all 0.2s;
+      border: none;
+      background: transparent;
+      width: 100%;
+    }
+    .logout-btn svg { width: 16px; height: 16px; }
+    .logout-btn:hover { background: rgba(239,68,68,0.15); color: #f87171; }
+
+    .main-content {
+      background: var(--bg);
+      padding: 40px;
+      overflow-y: auto;
+    }
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+    }
+    .page-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+      margin-bottom: 4px;
+    }
+    .page-sub { font-size: 14px; color: var(--text-muted); }
+
+    /* Stats Row */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--border);
+    }
+    .stat-label-top {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+    .stat-value {
+      font-family: 'Syne', sans-serif;
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+    }
+    .stat-indicator {
+      display: inline-flex;
+      align-items: center;
+      margin-top: 8px;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+    .stat-indicator.open { background: rgba(239,68,68,0.12); color: #f87171; }
+    .stat-indicator.progress { background: rgba(251,146,60,0.12); color: #fb923c; }
+    .stat-indicator.resolved { background: rgba(99,230,153,0.12); color: var(--accent); }
+
+    /* Tab Area */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 24px;
+      width: fit-content;
+    }
+    .tab-btn {
+      padding: 8px 20px;
+      border-radius: 9px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.2s;
+      width: auto;
+    }
+    .tab-btn.active {
+      background: var(--dark);
+      color: white;
+    }
+
+    /* Create Form Panel */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .panel-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    /* Issue Cards */
+    .issues-grid { display: flex; flex-direction: column; gap: 12px; }
+    .issue-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: all 0.2s;
+      animation: fadeUp 0.3s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .issue-card:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px var(--accent);
+    }
+    .issue-num {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      min-width: 40px;
+    }
+    .issue-body { flex: 1; }
+    .issue-title-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .issue-desc-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 400px;
+    }
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-muted);
+    }
+    .empty-state-icon { font-size: 40px; margin-bottom: 12px; }
+    .empty-state-text { font-size: 15px; font-weight: 500; }
+    .empty-state-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+    @media (max-width: 768px) {
+      .app-layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main-content { padding: 24px 16px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
+  <div class="app-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="sidebar-brand-name">IssueDesk</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" onclick="showTab('create', event)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          New Issue
+        </div>
+        <div class="nav-item" onclick="showTab('view', event)">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          My Issues
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-row">
+          <div class="user-avatar" id="userAvatar">E</div>
+          <div class="user-info">
+            <div class="user-name" id="userName">Employee</div>
+            <div class="user-role">Employee</div>
+          </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sign out
+        </button>
+      </div>
+    </aside>
 
-<div class="navbar">
-  <h3>Employee Dashboard</h3>
-  <button onclick="logout()">Logout</button>
-</div>
+    <!-- Main -->
+    <main class="main-content">
+      <!-- Create Tab -->
+      <div id="createTab">
+        <div class="page-header">
+          <div>
+            <div class="page-title">New Issue</div>
+            <div class="page-sub">Report a problem to your admin team</div>
+          </div>
+        </div>
 
-<div class="tabs">
-  <div class="tab active" onclick="showTab('create', event)">Create</div>
-  <div class="tab" onclick="showTab('view', event)">My Issues</div>
-</div>
+        <div class="panel">
+          <div class="panel-title">Issue Details</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Issue Title</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                <input type="text" id="title" placeholder="Brief title of the issue">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <div class="input-wrap">
+                <svg class="input-icon" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <input type="text" id="description" placeholder="Describe the issue in detail">
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="createIssue()" style="width:auto; padding: 12px 28px;">
+            Submit Issue
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <div id="createMsg" class="form-msg"></div>
+        </div>
+      </div>
 
-<div id="createTab" class="container">
-  <h3>Create Issue</h3>
-  <input id="title" placeholder="Issue Title">
-  <input id="description" placeholder="Description">
-  <button onclick="createIssue()">Submit</button>
-</div>
+      <!-- View Tab -->
+      <div id="viewTab" style="display:none;">
+        <div class="page-header">
+          <div>
+            <div class="page-title">My Issues</div>
+            <div class="page-sub">Track all your submitted issues</div>
+          </div>
+        </div>
+        <div class="stats-grid" id="statsRow" style="display:none;">
+          <div class="stat-card">
+            <div class="stat-label-top">Total Issues</div>
+            <div class="stat-value" id="totalCount">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label-top">In Progress</div>
+            <div class="stat-value" id="progressCount">0</div>
+            <div class="stat-indicator progress">Active</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label-top">Resolved</div>
+            <div class="stat-value" id="resolvedCount">0</div>
+            <div class="stat-indicator resolved">Closed</div>
+          </div>
+        </div>
+        <div id="issues" class="issues-grid"></div>
+      </div>
+    </main>
+  </div>
 
-<div id="viewTab" style="display:none;">
-  <h3>My Issues</h3>
-  <div id="issues"></div>
-</div>
-
-<script src="js/api.js"></script>
-<script src="js/auth.js"></script>
-<script src="js/employee.js"></script>
-
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/employee.js"></script>
 </body>
 </html>
