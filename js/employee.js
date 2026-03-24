@@ -3,7 +3,7 @@ if (role !== "EMPLOYEE") {
   window.location.href = "index.html";
 }
 
-function showTab(tab) {
+function showTab(tab, event) {
   document.getElementById("createTab").style.display =
     tab === "create" ? "block" : "none";
 

@@ -1,33 +1,49 @@
-body {
-  font-family: Arial;
-  background: #eef2f7;
+/* Reset */
+* {
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
-h2, h3 {
-  text-align: center;
+body {
+  background: #f4f7fb;
+  color: #333;
 }
 
+/* Navbar */
 .navbar {
   display: flex;
   justify-content: space-between;
-  background: #4CAF50;
+  align-items: center;
+  background: linear-gradient(90deg, #4CAF50, #2e7d32);
   color: white;
-  padding: 10px 20px;
+  padding: 15px 25px;
+  font-size: 18px;
 }
 
+.navbar button {
+  background: white;
+  color: #4CAF50;
+  border-radius: 20px;
+  padding: 6px 15px;
+  font-weight: bold;
+}
+
+/* Tabs */
 .tabs {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
+  margin: 20px;
 }
 
 .tab {
   padding: 10px 20px;
-  margin: 5px;
-  background: #ddd;
+  margin: 0 5px;
+  background: #e0e0e0;
+  border-radius: 20px;
   cursor: pointer;
-  border-radius: 8px;
+  transition: 0.3s;
 }
 
 .tab.active {
@@ -35,49 +51,79 @@ h2, h3 {
   color: white;
 }
 
+/* Container */
 .container {
   width: 350px;
   margin: auto;
-  margin-top: 30px;
-  padding: 20px;
   background: white;
+  padding: 25px;
   border-radius: 12px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
-input, select, button {
-  display: block;
-  width: 90%;
-  margin: 10px auto;
+/* Inputs */
+input, select {
+  width: 100%;
   padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }
 
+/* Buttons */
 button {
+  width: 100%;
+  padding: 10px;
   background: #4CAF50;
-  color: white;
   border: none;
+  color: white;
+  border-radius: 8px;
   cursor: pointer;
+  transition: 0.3s;
 }
 
 button:hover {
-  background: #45a049;
+  background: #388e3c;
 }
 
+/* Cards */
 .card {
-  background: white;
+  width: 80%;
   margin: 15px auto;
   padding: 15px;
-  width: 80%;
-  border-radius: 10px;
-  box-shadow: 0px 0px 8px rgba(0,0,0,0.1);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  transition: 0.3s;
 }
 
+.card:hover {
+  transform: scale(1.02);
+}
+
+/* Status Badge */
 .status {
-  padding: 5px 10px;
-  border-radius: 6px;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
   color: white;
+  margin-top: 5px;
 }
 
-.status.OPEN { background: red; }
-.status.IN_PROGRESS { background: orange; }
-.status.RESOLVED { background: green; }
+.status.OPEN { background: #e53935; }
+.status.IN_PROGRESS { background: #fb8c00; }
+.status.RESOLVED { background: #43a047; }
+
+/* Headings */
+h2, h3 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Center text message */
+.empty {
+  text-align: center;
+  margin-top: 20px;
+  color: gray;
+}

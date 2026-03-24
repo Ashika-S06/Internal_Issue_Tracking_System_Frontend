@@ -19,22 +19,19 @@ async function loadIssues() {
 
     issues.forEach(issue => {
       container.innerHTML += `
-        <div class="card">
-          <h4>${issue.title}</h4>
-          <p>${issue.description}</p>
-          <span class="status ${issue.status}">${issue.status}</span>
-
-          <br><br>
-
-          <select onchange="updateStatus('${issue._id}', this.value)">
-            <option value="">Update Status</option>
-            <option value="OPEN">OPEN</option>
-            <option value="IN_PROGRESS">IN_PROGRESS</option>
-            <option value="RESOLVED">RESOLVED</option>
-          </select>
-        </div>
-      `;
-    });
+      <div class="card">
+      <h4>${issue.title}</h4>
+      <p>${issue.description}</p>
+      <span class="status ${issue.status}">${issue.status}</span>
+      <select onchange="updateStatus('${issue._id}', this.value)">
+        <option value="">Update Status</option>
+        <option value="OPEN">OPEN</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="RESOLVED">RESOLVED</option>
+      </select>
+    </div>
+  `;
+});
 
   } catch (err) {
     console.error("LOAD ERROR:", err);

@@ -12,19 +12,17 @@
 </div>
 
 <div class="tabs">
-  <div class="tab active" onclick="showTab('create')">Create Issue</div>
-  <div class="tab" onclick="showTab('view')">My Issues</div>
+  <div class="tab active" onclick="showTab('create', event)">Create</div>
+  <div class="tab" onclick="showTab('view', event)">My Issues</div>
 </div>
 
-<!-- CREATE ISSUE -->
 <div id="createTab" class="container">
   <h3>Create Issue</h3>
-  <input id="title" placeholder="Title">
+  <input id="title" placeholder="Issue Title">
   <input id="description" placeholder="Description">
   <button onclick="createIssue()">Submit</button>
 </div>
 
-<!-- VIEW ISSUES -->
 <div id="viewTab" style="display:none;">
   <h3>My Issues</h3>
   <div id="issues"></div>
