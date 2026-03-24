@@ -1,3 +1,31 @@
+function checkAuth() {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  if (!token) {
+    window.location.href = "index.html";
+    return null;
+  }
+
+  return role;
+}
+
+// Auto redirect if already logged in
+(function () {
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
+
+  if (token && role) {
+    if (window.location.pathname.includes("index.html")) {
+      if (role === "ADMIN") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "employee.html";
+      }
+    }
+  }
+})();
+
 async function login() {
   const username = document.getElementById("username").value.trim();
   const password = document.getElementById("password").value.trim();
