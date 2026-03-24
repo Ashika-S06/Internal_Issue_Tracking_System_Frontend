@@ -2,17 +2,43 @@ body {
   font-family: Arial;
   background: #eef2f7;
   margin: 0;
-  padding: 0;
 }
 
 h2, h3 {
   text-align: center;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.tab {
+  padding: 10px 20px;
+  margin: 5px;
+  background: #ddd;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.tab.active {
+  background: #4CAF50;
+  color: white;
+}
+
 .container {
-  width: 300px;
+  width: 350px;
   margin: auto;
-  margin-top: 100px;
+  margin-top: 30px;
   padding: 20px;
   background: white;
   border-radius: 12px;
@@ -47,20 +73,11 @@ button:hover {
 }
 
 .status {
-  display: inline-block;
   padding: 5px 10px;
   border-radius: 6px;
   color: white;
 }
 
-.status.OPEN {
-  background: red;
-}
-
-.status.IN_PROGRESS {
-  background: orange;
-}
-
-.status.RESOLVED {
-  background: green;
-}
+.status.OPEN { background: red; }
+.status.IN_PROGRESS { background: orange; }
+.status.RESOLVED { background: green; }

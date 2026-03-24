@@ -3,6 +3,19 @@ if (role !== "EMPLOYEE") {
   window.location.href = "index.html";
 }
 
+function showTab(tab) {
+  document.getElementById("createTab").style.display =
+    tab === "create" ? "block" : "none";
+
+  document.getElementById("viewTab").style.display =
+    tab === "view" ? "block" : "none";
+
+  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+  event.target.classList.add("active");
+
+  if (tab === "view") loadIssues();
+}
+
 async function createIssue() {
   const title = document.getElementById("title").value.trim();
   const description = document.getElementById("description").value.trim();
@@ -14,10 +27,9 @@ async function createIssue() {
 
   await request("/issues", "POST", { title, description });
 
+  alert("Issue created!");
   document.getElementById("title").value = "";
   document.getElementById("description").value = "";
-
-  loadIssues();
 }
 
 async function loadIssues() {
@@ -25,6 +37,11 @@ async function loadIssues() {
 
   const container = document.getElementById("issues");
   container.innerHTML = "";
+
+  if (!issues || issues.length === 0) {
+    container.innerHTML = "<p style='text-align:center;'>No issues found</p>";
+    return;
+  }
 
   issues.forEach(issue => {
     container.innerHTML += `
@@ -36,5 +53,3 @@ async function loadIssues() {
     `;
   });
 }
-
-loadIssues();

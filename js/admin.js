@@ -9,6 +9,11 @@ async function loadIssues() {
   const container = document.getElementById("issues");
   container.innerHTML = "";
 
+  if (!issues || issues.length === 0) {
+    container.innerHTML = "<p style='text-align:center;'>No issues found</p>";
+    return;
+  }
+
   issues.forEach(issue => {
     container.innerHTML += `
       <div class="card">
@@ -17,9 +22,10 @@ async function loadIssues() {
         <span class="status ${issue.status}">${issue.status}</span>
 
         <select onchange="updateStatus('${issue._id}', this.value)">
-          <option value="">Change Status</option>
-          ${issue.status === "OPEN" ? '<option value="IN_PROGRESS">IN_PROGRESS</option>' : ''}
-          ${issue.status === "IN_PROGRESS" ? '<option value="RESOLVED">RESOLVED</option>' : ''}
+          <option value="">Update Status</option>
+          <option value="OPEN">OPEN</option>
+          <option value="IN_PROGRESS">IN_PROGRESS</option>
+          <option value="RESOLVED">RESOLVED</option>
         </select>
       </div>
     `;
